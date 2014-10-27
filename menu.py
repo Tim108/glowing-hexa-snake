@@ -25,10 +25,10 @@ class MainMenu(Menu):
         # you can override the font that will be used for the title and the items
         self.font_title['font_name'] = 'You Are Loved'
         self.font_title['font_size'] = 40
-	self.font_title['color'] = (0,255,0,255)
+	self.font_title['color'] = (0,185,0,255)
         self.font_item['font_name'] = 'You Are Loved'
         self.font_item_selected['font_name'] = 'You Are Loved'
-	self.font_item_selected['color'] = (0,255,0,255)	
+	self.font_item_selected['color'] = (0,185,0,255)	
         # you can also override the font size and the colors. see menu.py for
         # more info
 
@@ -47,8 +47,6 @@ class MainMenu(Menu):
 
     # Callbacks
     def on_new_game( self ):
-#        director.set_scene( StartGame() )
-        print("on_new_game()")
         self.parent.switch_to( 3 )
 
     def on_scores( self ):
@@ -67,10 +65,10 @@ class OptionMenu(Menu):
 
         self.font_title['font_name'] = 'You Are Loved'
         self.font_title['font_size'] = 40
-	self.font_title['color'] = (0,255,0,255)
+	self.font_title['color'] = (0,185,0,255)
         self.font_item['font_name'] = 'You Are Loved'
         self.font_item_selected['font_name'] = 'You Are Loved'
-	self.font_item_selected['color'] = (0,255,0,255)
+	self.font_item_selected['color'] = (0,185,0,255)
         self.menu_valign = TOP
         self.menu_halign = LEFT
 
@@ -96,10 +94,10 @@ class ScoreMenu(Menu):
 
         self.font_title['font_name'] = 'You Are Loved'
         self.font_title['font_size'] = 40
-	self.font_title['color'] = (0,255,0,255)
+	self.font_title['color'] = (0,185,0,255)
         self.font_item['font_name'] = 'You Are Loved'
         self.font_item_selected['font_name'] = 'You Are Loved'
-	self.font_item_selected['color'] = (0,255,0,255)
+	self.font_item_selected['color'] = (0,185,0,255)
         self.menu_valign = TOP
         self.menu_halign = LEFT
 
@@ -114,18 +112,26 @@ class Ingame(Menu):
 
         self.font_title['font_name'] = 'You Are Loved'
         self.font_title['font_size'] = 40
-        self.font_title['color'] = (0,255,0,255)
+        self.font_title['color'] = (0,185,0,255)
         self.font_item['font_name'] = 'You Are Loved'
         self.font_item_selected['font_name'] = 'You Are Loved'
-        self.font_item_selected['color'] = (0,255,0,255)
-        self.menu_valign = TOP
+        self.font_item_selected['color'] = (0,185,0,255)
+	self.font_item['font_size'] = 18
+	self.font_item_selected['font_size'] = 18
+        self.menu_valign = BOTTOM
         self.menu_halign = LEFT
 
-        self.create_menu( [MenuItem('Go Back', self.on_quit)] )
+	items = []
+        items.append( MenuItem('Pause', self.on_pause) )
+        items.append( MenuItem('Exit', self.on_quit) )
+        self.create_menu(items)
 
     def on_quit( self ):
         self.parent.switch_to( 0 )
 
+    def on_pause( self ):
+	self.parent.switch_to( 0 )
+	#do something?
 
 def init():
     director.init( resizable=True, width=640, height=480)
