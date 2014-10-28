@@ -2,6 +2,7 @@ import threading
 import termios, fcntl, sys, os
 import RPi.GPIO as GPIO
 import time
+import atexit
 
 class Output(threading.Thread):
     def __init__(self, lock):
@@ -17,7 +18,6 @@ class Output(threading.Thread):
         oldflags = fcntl.fcntl(fd, fcntl.F_GETFL)
         fcntl.fcntl(fd, fcntl.F_SETFL, oldflags | os.O_NONBLOCK)
  
-        GPIO.cleanup()
         GPIO.setmode(GPIO.BCM)
 
         GPIO.setup(8, GPIO.OUT)
@@ -35,27 +35,27 @@ class Output(threading.Thread):
 
     def up(self):
 	self.lock.acquire()
-	reset()
+	self.reset()
 	GPIO.output(5, GPIO.HIGH)
 	self.lock.release()
 
     def down(self):
 	self.lock.acquire()
-	reset()
+	self.reset()
 	GPIO.output(8, GPIO.HIGH)
 	GPIO.output(5, GPIO.HIGH)
 	self.lock.release()
 
     def left(self):
 	self.lock.acquire()
-	reset()
+	self.reset()
 	GPIO.output(10, GPIO.HIGH)
 	GPIO.output(5, GPIO.HIGH)
 	self.lock.release()
 
     def right(self):
 	self.lock.acquire()
-	reset()
+	self.reset()
 	GPIO.output(8, GPIO.HIGH)
 	GPIO.output(10, GPIO.HIGH)
 	GPIO.output(5, GPIO.HIGH)
@@ -63,13 +63,14 @@ class Output(threading.Thread):
 
     def pause(self):
 	self.lock.acquire()
-	reset()
+	self.reset()
 	GPIO.output(3, GPIO.HIGH)
 	GPIO.output(5, GPIO.HIGH)
 	self.lock.release()
 
-    def reset(self):
+    def bReset(self):
 	self.lock.acquire()
+	self.reset()
 	GPIO.output(8, GPIO.HIGH)
 	GPIO.output(3, GPIO.HIGH)
 	GPIO.output(5, GPIO.HIGH)
@@ -77,6 +78,7 @@ class Output(threading.Thread):
 
     def bStart(self):
 	self.lock.acquire()
+	self.reset()
 	GPIO.output(10, GPIO.HIGH)
 	GPIO.output(3, GPIO.HIGH)
 	GPIO.output(5, GPIO.HIGH)
@@ -84,10 +86,12 @@ class Output(threading.Thread):
 
     def bExit(self):
 	self.lock.acquire()
+	self.reset()
 	GPIO.output(8, GPIO.HIGH)
 	GPIO.output(10, GPIO.HIGH)
 	GPIO.output(3, GPIO.HIGH)
 	GPIO.output(5, GPIO.HIGH)
+	GPIO.cleanup()
 	self.lock.release()
 
-
+atexit.register(GPIO.cleanup())
