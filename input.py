@@ -1,8 +1,11 @@
 #catch input
-class Input.py(self):
-    def __init__(self, MainMenu):
-	print "Input initialized"
+from menu import *
+import threading
 
+class Input(threading.Thread):
     def run(self):
-	print "Input running"
+	i = 0
+	while(i<20):
+	    print '{}{}'.format("input " , i)
+	    i = i+1
 
