@@ -91,7 +91,9 @@ class Output(threading.Thread):
 	GPIO.output(10, GPIO.HIGH)
 	GPIO.output(3, GPIO.HIGH)
 	GPIO.output(5, GPIO.HIGH)
-	GPIO.cleanup()
 	self.lock.release()
 
-atexit.register(GPIO.cleanup())
+    def exit_handler():
+	GPIO.cleanup()
+
+    atexit.register(exit_handler)
