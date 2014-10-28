@@ -1,6 +1,7 @@
 #menu gui
 from output import *
 import threading
+import thread
 import time
 
 class Menu(threading.Thread):
@@ -12,8 +13,8 @@ class Menu(threading.Thread):
 	time.sleep(1)
 	lock = threading.Lock()
 	o = Output(lock)
-	o.down()
-	o.pause()
+	thread.start_new_thread(o.down, ())
+	thread.start_new_thread(o.up, ())
 	i = 0
 	while(i<20):
 	    print '{}{}'.format("menu " , i)
