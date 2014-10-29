@@ -14,8 +14,6 @@ class Gui(threading.Thread):
 
     def __init__(self):
         threading.Thread.__init__(self)
-	pygame.init()
-
 
     def initInput(self, input):
         self.myInput = input
@@ -34,6 +32,8 @@ class Gui(threading.Thread):
 
 #    def initializeScreen(self):
 #	pygame.display.init()
+
+	pygame.init()
 
 	size = width, height = 640, 480
 	black = 0, 0, 0

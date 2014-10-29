@@ -8,7 +8,6 @@ class KeyHits(threading.Thread):
     def __init__(self, guiArg):
 	threading.Thread.__init__(self)
 	self.gui = guiArg
-	self.run()
 
     def run(self):
 	fd = sys.stdin.fileno()
@@ -27,7 +26,7 @@ class KeyHits(threading.Thread):
 		        char = sys.stdin.read(1)
 		        self.processIn(char)
 		    except IOError: pass
-		    except KeyboardInterrupt: pass
+		    except KeyboardInterrupt: sys.exit()
 	except KeyboardInterrupt: sys.exit()
 	finally:
 	    termios.tcsetattr(fd, termios.TCSAFLUSH, oldterm)

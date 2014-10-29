@@ -10,12 +10,10 @@ input = Input(gui)
 input.daemon = True
 keyhits = KeyHits(gui)
 keyhits.daemon = True
-
 #Start threads
 gui.start()
 input.start()
 keyhits.start()
-
 #Wait for gui to finish
 gui.join()
 print "Main terminated"
