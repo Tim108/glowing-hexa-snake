@@ -5,9 +5,13 @@ import thread
 import time
 
 class Menu(threading.Thread):
+    myInput = 0
 
     def __init__(self):
 	threading.Thread.__init__(self)
+
+    def initInput(self, input):
+	self.myInput = input
 
     def run(self):
 	time.sleep(1)

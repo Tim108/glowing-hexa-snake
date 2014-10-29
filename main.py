@@ -4,7 +4,8 @@ from menu import *
 from input import *
 
 menu = Menu()
-input = Input()
+killInput = threading.Event()
+input = Input(menu, killInput)
 
 menu.start()
 input.start()
@@ -12,7 +13,7 @@ input.start()
 print "at the joins"
 menu.join()
 print "menu joined"
+killInput.set()
 input.join()
 print "input joined"
-
 
