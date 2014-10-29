@@ -1,32 +1,31 @@
 #catch input
-from menu import *
+from gui import *
 import threading
+import RPi.GPIO as GPIO
+import atexit
 
 class Input(threading.Thread):
-    stop = 0
-    myMenu = 0
+    mygui = 0
     pins = [11,12,13,15,16,18,22,19,21,23,24,26]
     
-    def __init__(self, menu, stopArg):
+    def __init__(self, gui):
 	threading.Thread.__init__(self)	
 	
-	self.stop = stopArg
-	self.myMenu = menu
+	self.myGui = gui
 
+    def run(self):
 	GPIO.setmode(GPIO.BCM)
         GPIO.setup(7, GPIO.IN)#valid bit
         for p in self.pins:
             GPIO.setup(p, GPIO.IN)#input bits
 
-    def run(self):
         gotIt = False
-        while(not self.stop.is_set()):
-            x = GPIO.input(7)
-            if (x == 1):
+        while(GPIO in globals()):
+            if (GPIO.input(7) and gotIt == False):
                 pinvalues = []
                 gotIt = True
-                for p in pins:
-                    pinvalues.extend(GPIO.input(p))
+                for p in self.pins:
+                    pinvalues.append(GPIO.input(p))
                 self.processinput(pinvalues)
             else:
                 gotIt = False
@@ -42,14 +41,17 @@ class Input(threading.Thread):
 
         for i in range(0,2): #What the number represents
             action = action + str(pinvalues[i])
+	print str(action) + " dingetjes en banaantjes "
+	self.doAction(action, location)        
 
-        actions[action](location)
+    def doAction(self, n, l):
+	actions = {00 : None,
+			1 : self.myGui.showScore,
+        	       	2 : self.myGui.candy,
+               		3 : self.myGui.addSnake,
+              	 	4 : self.myGui.delSnake,
+			7 : self.myGui.gameOver,
+	}
 
-actions = {1 : Menu.showScore,
-                2 : Menu.candy,
-                3 : Menu.addSnake,
-                4 : Menu.delSnake,
-                7 : Menu.gameOver,
-}
-
+	actions[1](l)
 

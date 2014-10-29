@@ -1,19 +1,15 @@
 #Main
 import threading
-from menu import *
+from gui import *
 from input import *
 
-menu = Menu()
-killInput = threading.Event()
-input = Input(menu, killInput)
+gui = Gui()
+input = Input(gui)
+input.daemon = True
 
-menu.start()
+gui.start()
 input.start()
 
-print "at the joins"
-menu.join()
-print "menu joined"
-killInput.set()
-input.join()
-print "input joined"
+gui.join()
+print "Main terminated"
 

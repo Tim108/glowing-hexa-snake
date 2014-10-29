@@ -1,10 +1,10 @@
-#menu gui
+#gui
 from output import *
 import threading
 import thread
 import time
 
-class Menu(threading.Thread):
+class Gui(threading.Thread):
     myInput = 0
 
     def __init__(self):
@@ -19,6 +19,7 @@ class Menu(threading.Thread):
 	o = Output(lock)
 #	thread.start_new_thread( o.down, () )
 #	thread.start_new_thread( o.up, () )
+#	gui mag hier
 
     def showScore(self, score):
 	print "Your score is " + str(score)

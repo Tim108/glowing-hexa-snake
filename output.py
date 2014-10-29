@@ -7,7 +7,7 @@ import atexit
 class Output(threading.Thread):
     def __init__(self, lock):
 	self.lock = lock
-
+	print "herman"
 	fd = sys.stdin.fileno()
     
         oldterm = termios.tcgetattr(fd)
@@ -26,25 +26,29 @@ class Output(threading.Thread):
         GPIO.setup(5, GPIO.OUT)
 
     def reset(self):
-	self.lock.acquire()
 	GPIO.output(8, GPIO.LOW)
 	GPIO.output(10, GPIO.LOW)
 	GPIO.output(3, GPIO.LOW)
 	GPIO.output(5, GPIO.LOW)
-	self.lock.release()
 
     def up(self):
+	print "wanna go up"
 	self.lock.acquire()
+	print "got lock in up"
 	self.reset()
 	GPIO.output(5, GPIO.HIGH)
 	self.lock.release()
+	print "going up"
 
     def down(self):
+	print "wanna go down"
 	self.lock.acquire()
+	print "got lock in down"
 	self.reset()
 	GPIO.output(8, GPIO.HIGH)
 	GPIO.output(5, GPIO.HIGH)
 	self.lock.release()
+	print "going down"
 
     def left(self):
 	self.lock.acquire()
