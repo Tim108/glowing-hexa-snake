@@ -20,3 +20,17 @@ class Menu(threading.Thread):
 	    print '{}{}'.format("menu " , i)
 	    i = i+1
 
+    def showScore(self, score):
+	print "Your score is " + str(score)
+
+    def candy(self, location):
+	print "Candy discovered on tile " + str(location)
+
+    def addSnake(self, location):
+	print "Snake tile created at " + str(location)
+
+    def delSnake(self, location):
+	print "Snake tile deleted at " + str(location)
+
+    def gameOver(self, score):
+	print "GameOver and we don't care about the score"
