@@ -21,16 +21,15 @@ class KeyHits(threading.Thread):
 	fcntl.fcntl(fd, fcntl.F_SETFL, oldflags | os.O_NONBLOCK)
 	try:
 		print "herman"
-		while(True):
+		while(sys in Global()):
 		    try:
 		        char = sys.stdin.read(1)
 		        self.processIn(char)
 		    except IOError: pass
-		    except KeyboardInterrupt: sys.exit()
-	except KeyboardInterrupt: sys.exit()
 	finally:
 	    termios.tcsetattr(fd, termios.TCSAFLUSH, oldterm)
 	    fcntl.fcntl(fd, fcntl.F_SETFL, oldflags)
+	    sys.exit()
 
     def processIn(self, char):
 	if(char == 'w'):

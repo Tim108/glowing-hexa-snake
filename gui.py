@@ -26,17 +26,11 @@ class Gui(threading.Thread):
 #       thread.start_new_thread( o.up, () )
 #       gui mag hier
 #       Eerst een scherm maken
-#	self.display = pygame.display.set_mode((640, 480), pygame.HWSURFACE|pygame.DOUBLEBUF)
-#	self.initializeScreen()
-#	pygame.display.update()
-
-#    def initializeScreen(self):
-#	pygame.display.init()
 
 	pygame.init()
 
 	size = width, height = 640, 480
-	black = 0, 0, 0
+	black = 0, 255, 0
 
 	screen = pygame.display.set_mode(size)
 
