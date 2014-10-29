@@ -2,7 +2,6 @@
 from gui import *
 import threading
 import RPi.GPIO as GPIO
-import atexit
 
 class Input(threading.Thread):
     mygui = 0
@@ -14,6 +13,7 @@ class Input(threading.Thread):
 	self.myGui = gui
 
     def run(self):
+	GPIO.setwarnings(False)
 	GPIO.setmode(GPIO.BCM)
         GPIO.setup(7, GPIO.IN)#valid bit
         for p in self.pins:

@@ -1,11 +1,13 @@
 #guiInput
 import threading
 import termios, fcntl, sys, os
+import threading
 
-class guiIn():
+class KeyHits(threading.Thread):
     gui = 0
-    def __init__(self):
-	#gui = menu
+    def __init__(self, guiArg):
+	threading.Thread.__init__(self)
+	self.gui = guiArg
 	self.run()
 
     def run(self):
@@ -26,23 +28,21 @@ class guiIn():
 		        self.processIn(char)
 		    except IOError: pass
 		    except KeyboardInterrupt: pass
-        except KeyboardInterrupt: pass
+	except KeyboardInterrupt: sys.exit()
 	finally:
 	    termios.tcsetattr(fd, termios.TCSAFLUSH, oldterm)
 	    fcntl.fcntl(fd, fcntl.F_SETFL, oldflags)
 
     def processIn(self, char):
 	if(char == 'w'):
-		print "Go up"
+		self.gui.keyUp()
 	elif(char == 'a'):
-		print "Go left"
+		self.gui.keyLeft()
 	elif(char == 's'):
-		print "Go down"
+		self.gui.keyDown()
 	elif(char == 'd'):
-		print "Go right"
+		self.gui.keyRight()
 	elif(char == 'p'):
-		print "Pause"
+		self.gui.keyPause()
 	elif(char == 'r'):
-		print "Reset"
-    
-guiIn()
+		self.gui.keyReset()

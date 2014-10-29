@@ -2,12 +2,12 @@ import threading
 import termios, fcntl, sys, os
 import RPi.GPIO as GPIO
 import time
-import atexit
 
 class Output(threading.Thread):
     def __init__(self, lock):
 	self.lock = lock
- 
+	
+	GPIO.setwarnings(False) 
         GPIO.setmode(GPIO.BCM)
 
         GPIO.setup(8, GPIO.OUT)
@@ -22,23 +22,17 @@ class Output(threading.Thread):
 	GPIO.output(5, GPIO.LOW)
 
     def up(self):
-	print "wanna go up"
 	self.lock.acquire()
-	print "got lock in up"
 	self.reset()
 	GPIO.output(5, GPIO.HIGH)
 	self.lock.release()
-	print "going up"
 
     def down(self):
-	print "wanna go down"
 	self.lock.acquire()
-	print "got lock in down"
 	self.reset()
 	GPIO.output(8, GPIO.HIGH)
 	GPIO.output(5, GPIO.HIGH)
 	self.lock.release()
-	print "going down"
 
     def left(self):
 	self.lock.acquire()
@@ -87,7 +81,3 @@ class Output(threading.Thread):
 	GPIO.output(5, GPIO.HIGH)
 	self.lock.release()
 
-    def exit_handler():
-	GPIO.cleanup()
-
-    atexit.register(exit_handler)

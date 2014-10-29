@@ -26,13 +26,14 @@ class Gui(threading.Thread):
 #       thread.start_new_thread( o.up, () )
 #       gui mag hier
 #       Eerst een scherm maken
-	self.display = pygame.display.set_mode((640, 480), pygame.HWSURFACE|pygame.DOUBLEBUF)
-	self.initializeScreen()
-	pygame.display.update()
+#	self.display = pygame.display.set_mode((640, 480), pygame.HWSURFACE|pygame.DOUBLEBUF)
+#	self.initializeScreen()
+#	pygame.display.update()
 
-    def initializeScreen(self):
-	pygame.display.init()
+#    def initializeScreen(self):
+#	pygame.display.init()
 
+    #Input from fpga board
     def showScore(self, score):
         print "Your score is " + str(score)
 
@@ -47,3 +48,22 @@ class Gui(threading.Thread):
 
     def gameOver(self, score):
         print "GameOver and we don't care about the score"
+
+    #Input from keyboard
+    def keyUp(self):
+	print "Up is pushed"
+
+    def keyLeft(self):
+	print "Left is pushed"
+
+    def keyDown(self):
+	print "Down is pushed"
+
+    def keyRight(self):
+	print "Right is pushed"
+
+    def keyPause(self):
+	print "Pause is pushed"
+
+    def keyReset(self):
+	print "Reset is pushed"
