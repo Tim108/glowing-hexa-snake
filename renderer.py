@@ -7,8 +7,7 @@ class Renderer(object):
 		pygame.init()
 
         	size = width, height = 640, 480
-        	black = 0, 0, 0
-
+		black = 0, 0, 0
         	screen = pygame.display.set_mode(size)
 
 		#Make surface
@@ -55,7 +54,6 @@ class Renderer(object):
 							print str(totalClicks) + " , " + str(numClicked)
 				if event.type == pygame.QUIT:
 					sys.exit()
-			time.sleep(1)
 			pygame.display.flip()
 
 	def drawField(self):
@@ -63,7 +61,7 @@ class Renderer(object):
 		size = width, height = 640, 480
 		black = 0, 0, 0
 		white = 255, 255, 255
-		fieldScreen = pygame.display.set_mode(size)
+		self.fieldScreen = pygame.display.set_mode(size)
 		#Make surface
 		fieldSurface = pygame.Surface(size)
 		fieldSurface.fill(black)
@@ -72,21 +70,89 @@ class Renderer(object):
 		for c in range(0, 16):
 			pygame.draw.line(fieldSurface, grey, [c*30+15, 15], [c*30+15, 15*30+15])
 			pygame.draw.line(fieldSurface, grey, [15, c*30+15], [15*30+15, c*30+15])
-		fieldScreen.blit(fieldSurface, (0,0))
+		self.fieldScreen.blit(fieldSurface, (0,0))
 		#Draw buttons
 		fieldButtons = ['res/Pause.png', 'res/Reset.png', 'res/Exit.png']
 		for x in range (0, len(fieldButtons)):
 			pathField = fieldButtons[x]
 			imageField = pygame.image.load(pathField)
 			fieldSurface.blit(imageField, (488, 15+x*65))
-		fieldScreen.blit(fieldSurface, (0,0))
+		self.fieldScreen.blit(fieldSurface, (0,0))
 		#Draw "Score:"
 		scoreFont = pygame.font.SysFont("Arial", 30)
 		scoreText = scoreFont.render("Score: ", True, white)
-		fieldScreen.blit(scoreText, (510, 365))
-		#Draw snake
+		self.fieldScreen.blit(scoreText, (510, 365))
+
+		while True:
+			for event in pygame.event.get():
+				if event.type == pygame.MOUSEBUTTONDOWN:
+					pos = pygame.mouse.get_pos()
+					xPos = pos[0]
+					yPos = pos[1]
+					if xPos >= 488 and xPos <= 618:
+						if yPos >= 15 and yPos <= 65:
+							self.printScore('Pause')
+							#Make overlay
+							s = pygame.Surface((640,480))
+							s.set_alpha(128)
+							s.fill(black)
+							#fieldScreen.blit(s, (0,0))
+							#Make text "Game paused" on overlay
+							font = pygame.font.SysFont("Arial", 40)
+							gamePausedLabel = font.render("Game paused", 1, white)
+							
+							font = pygame.font.SysFont("Arial", 20)
+							pressPLabel = font.render("Press [P] to continue", 1, white)
+							
+							xLoc = (640 - gamePausedLabel.get_width())/2
+							yLoc = (480 - (pressPLabel.get_height() + gamePausedLabel.get_height()))/2
+
+							s.blit(gamePausedLabel, (xLoc, yLoc))
+	
+							x2Loc = (640 - pressPLabel.get_width())/2
+							y2Loc = (480 + pressPLabel.get_height())/2
+
+							s.blit(pressPLabel, (x2Loc, y2Loc))
+							self.fieldScreen.blit(s, (0, 0))
+
+						elif yPos >= 80 and yPos <= 130:
+							s = pygame.Surface((640,480))
+                                                        s.set_alpha(128)
+                                                        s.fill(black)
+                                                        #fieldScreen.blit(s, (0,0))
+                                                        #Make text "Game paused" on overlay
+                                                        font = pygame.font.SysFont("Arial", 40)
+                                                        gamePausedLabel = font.render("Game reset", 1, white)
+
+                                                        font = pygame.font.SysFont("Arial", 20)
+                                                        pressPLabel = font.render("Press [R] to restart", 1, white)
+
+                                                        xLoc = (640 - gamePausedLabel.get_width())/2
+                                                        yLoc = (480 - (pressPLabel.get_height() + gamePausedLabel.get_height()))/2
+
+                                                        s.blit(gamePausedLabel, (xLoc, yLoc))
+
+                                                        x2Loc = (640 - pressPLabel.get_width())/2
+                                                        y2Loc = (480 + pressPLabel.get_height())/2
+
+                                                        s.blit(pressPLabel, (x2Loc, y2Loc))
+                                                        self.fieldScreen.blit(s, (0, 0))
+
+							self.printScore('Reset')
+						elif yPos >= 145 and yPos <= 205:
+							sys.exit()
+			pygame.display.flip()
+			
 		
+	def printScore(self, score):
+		white = 255, 255, 255
+		#First make black overlay because maybe an old score has been printed already?
 		
+		#Print score beneath "Score:" label
+		scoreFont = pygame.font.SysFont("Arial", 30)
+		scoreNum = scoreFont.render(score, True, white)
+		self.fieldScreen.blit(scoreNum, (510, 400))		
 
 if __name__ == "__main__":
-	renderer = Renderer()
+	rendererx = Renderer().drawField()
+	renderer = Renderer().printScore(150)

@@ -1,5 +1,6 @@
 #gui
 from output import *
+from renderer import *
 import threading
 import thread
 import time
@@ -12,39 +13,24 @@ from pygame.color import Color
 class Gui(threading.Thread):
     myInput = 0
     o = 0
+    renderer = 0
     def __init__(self):
         threading.Thread.__init__(self)
 
-    def initInput(self, input):
-        self.myInput = input
-
     def run(self):
-        time.sleep(1)
         lock = threading.Lock()
         self.o = Output(lock)
 #       thread.start_new_thread( o.down, () )
 #       thread.start_new_thread( o.up, () )
 #       gui mag hier
 #       Eerst een scherm maken
-
-	pygame.init()
-
-	size = width, height = 640, 480
-	black = 0, 255, 0
-
-	screen = pygame.display.set_mode(size)
-
-	while(True):
-	    for event in pygame.event.get():
-		if event.type == pygame.QUIT:
-		    print "gui wants to exit"
-	    
-	    screen.fill(black)
-	    pygame.display.flip()
-
+	self.renderer = Renderer(self)
+	self.showScore(5)
+	
     #Input from fpga board
     def showScore(self, score):
         print "Your score is " + str(score)
+	self.renderer.printScore(score)
 
     def candy(self, location):
         print "Candy discovered on tile " + str(location)
