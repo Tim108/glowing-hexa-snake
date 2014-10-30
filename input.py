@@ -20,9 +20,9 @@ class Input(threading.Thread):
             GPIO.setup(p, GPIO.IN)#input bits
 
         gotIt = False
-        while(GPIO in globals()):
+        while(1):
             if (GPIO.input(4) and gotIt == False):
-                pinvalues = []
+		pinvalues = []
                 gotIt = True
                 for p in self.pins:
                     pinvalues.append(GPIO.input(p))
@@ -36,22 +36,20 @@ class Input(threading.Thread):
 
         for i in range(3,11): #Number (location) that's being sent
             location = location + str(pinvalues[i])
-        
+	print "bit array for location = " + location        
 	location = int(location, 2) #Convert the binary string to int
 
-        for i in range(0,2): #What the number represents
+        for i in range(0,3): #What the number represents
             action = action + str(pinvalues[i])
-	print str(action) + " dingetjes en banaantjes "
+	print "bit array for action = " + action
+	action = int(action, 2) #Convert the binary string to int
+
 	self.doAction(action, location)        
 
     def doAction(self, n, l):
-	actions = {00 : None,
-			1 : self.myGui.showScore,
-        	       	2 : self.myGui.candy,
-               		3 : self.myGui.addSnake,
-              	 	4 : self.myGui.delSnake,
-			7 : self.myGui.gameOver,
-	}
-
-	actions[1](l)
-
+	if(n == 1): self.myGui.showScore(l)
+	elif(n == 2): self.myGui.candy(l)
+	elif(n == 3): self.myGui.addSnake(l)
+	elif(n == 4): self.myGui.delSnake(l)
+	elif(n == 7): self.myGui.gameOver(l)
+	else: print str(n) + "is no valid input"
