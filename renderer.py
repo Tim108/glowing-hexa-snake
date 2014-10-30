@@ -12,14 +12,19 @@ class Renderer(object):
 		#Make surface
 		mySurface = pygame.Surface((640,480))
 		mySurface.fill(black)
+		
+		#Make background picture (load and put on surface)
+		myImage = pygame.image.load('res/background.png')
+		mySurface.blit(myImage, (0,0))
+
 		#Make color for rectangles
 		myColor = pygame.Color(0, 188, 0)
 		
 		sizeXRect = 100
 		sizeYRect = 50
 		#Make rectangle
-		xRect = 50
-		yRect = 135
+		xRect = 270
+		yRect = 180
 #		myRect = pygame.Rect(xRect, yRect, sizeXRect, sizeYRect)
 		#draw 3 rectangles
 #		pygame.draw.rect(mySurface, myColor, myRect, 1)
@@ -30,7 +35,7 @@ class Renderer(object):
 #		startText = myFont.render("Start game", 255, (255, 255, 255))
 		
 		#Draw button and text on surface
-		for i in [135, 195, 255]:
+		for i in [180, 240, 300]:
 			myRect = pygame.Rect(xRect, i, sizeXRect, sizeYRect)
 			pygame.draw.rect(mySurface, myColor, myRect, 1)
 		j=0
