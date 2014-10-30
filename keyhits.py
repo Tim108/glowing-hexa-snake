@@ -26,6 +26,7 @@ class KeyHits(threading.Thread):
 		        char = sys.stdin.read(1)
 		        self.processIn(char)
 		    except IOError: pass
+		    except KeyboardInterrupt: sys.exit()
 	finally:
 	    termios.tcsetattr(fd, termios.TCSAFLUSH, oldterm)
 	    fcntl.fcntl(fd, fcntl.F_SETFL, oldflags)

@@ -11,7 +11,7 @@ from pygame.color import Color
 
 class Gui(threading.Thread):
     myInput = 0
-
+    o = 0
     def __init__(self):
         threading.Thread.__init__(self)
 
@@ -21,7 +21,7 @@ class Gui(threading.Thread):
     def run(self):
         time.sleep(1)
         lock = threading.Lock()
-        o = Output(lock)
+        self.o = Output(lock)
 #       thread.start_new_thread( o.down, () )
 #       thread.start_new_thread( o.up, () )
 #       gui mag hier
@@ -61,18 +61,24 @@ class Gui(threading.Thread):
     #Input from keyboard
     def keyUp(self):
 	print "Up is pushed"
+	self.o.up()
 
     def keyLeft(self):
 	print "Left is pushed"
+	self.o.left()
 
     def keyDown(self):
 	print "Down is pushed"
+	self.o.down()
 
     def keyRight(self):
 	print "Right is pushed"
+	self.o.right()
 
     def keyPause(self):
 	print "Pause is pushed"
+	self.o.bPause()
 
     def keyReset(self):
 	print "Reset is pushed"
+	self.o.bReset()

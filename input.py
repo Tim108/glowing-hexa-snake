@@ -5,8 +5,8 @@ import RPi.GPIO as GPIO
 
 class Input(threading.Thread):
     mygui = 0
-    pins = [11,12,13,15,16,18,22,19,21,23,24,26]
-    
+    pins2 = [11,12,13,15,16,18,22,19,21,23,24,26]
+    pins = [17,18,27,22,23,24,25,10,9,11,8,7]
     def __init__(self, gui):
 	threading.Thread.__init__(self)	
 	
@@ -15,13 +15,13 @@ class Input(threading.Thread):
     def run(self):
 	GPIO.setwarnings(False)
 	GPIO.setmode(GPIO.BCM)
-        GPIO.setup(7, GPIO.IN)#valid bit
+        GPIO.setup(4, GPIO.IN)#valid bit
         for p in self.pins:
             GPIO.setup(p, GPIO.IN)#input bits
 
         gotIt = False
         while(GPIO in globals()):
-            if (GPIO.input(7) and gotIt == False):
+            if (GPIO.input(4) and gotIt == False):
                 pinvalues = []
                 gotIt = True
                 for p in self.pins:
