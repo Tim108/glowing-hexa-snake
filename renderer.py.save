@@ -1,0 +1,38 @@
+import pygame
+
+class Renderer(object):
+	def __init__(self):
+		pygame.init()
+
+        	size = width, height = 640, 480
+        	black = 0, 255, 0
+
+        	screen = pygame.display.set_mode(size)
+
+        	while(True):
+            	for event in pygame.event.get():
+             		if event.type == pygame.QUIT:
+                		sys.exit()
+
+        		screen.fill(black)
+	            pme.display.flip()
+
+		#Make surface
+		mySurface = pygame.Surface(640,480)
+		mySurface.fill(0, 0, 0)
+		#Make color for rectangles
+		myColor = pygame.Color(0, 188, 0)
+		#Make rectangle
+		myRect = pygame.Rect(10, 10, 100, 50)
+		myRect2 = pygame.Rect(10, 70, 100 , 50)
+		myRect3 = pygame.Rect(10, 130, 100, 50)
+		#draw 3 rectangles
+		pygame.draw.rect(mySurface, myColor, myRect, 1)
+		pygame.draw.rect(mySurface, myColor, myRect2, 1)
+		pygame.draw.rect(mySurface, myColor, myRect3, 1)
+		#insert text on rectangles
+		myFont = pygame.font.SysFont("Arial", 14)
+		startText = myFont.render("Start game", 255, (255, 255, 255))
+		
+		#Draw button and text on surface
+		mySurface.blit(startText, (10,10))

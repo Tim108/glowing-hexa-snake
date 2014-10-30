@@ -1,4 +1,5 @@
 import pygame
+import time
 
 class Renderer(object):
 	def __init__(self):
@@ -49,11 +50,34 @@ class Renderer(object):
 		
 		screen.blit(mySurface, (0, 0))
 
+		totalClicks = 0
+		numClicked = 0
         	while(True):
 	            	for event in pygame.event.get():
+#				print "Blablabla"
+				if event.type == pygame.MOUSEBUTTONDOWN:
+					totalClicks = totalClicks + 1
+					#print "Mouse gets (de)pressed"
+					pos = pygame.mouse.get_pos()
+					xPos = pos[0]
+					yPos = pos[1]
+#					print xPos
+#					print yPos
+					#Check where the mouse has clicked
+					if xPos >= 270 and xPos <= 370:
+						if yPos >= 180 and yPos <= 230:
+							numClicked = numClicked + 1
+#							print "Start game has been clicked"
+						elif yPos >= 240 and yPos <= 290:
+							numClicked = numClicked + 1
+#							print "Highscores has been clicked"
+						elif yPos >= 300 and yPos <= 350:
+							numClicked = numClicked + 1
+#							print "Exit game has been clicked"
+							print str(totalClicks) + " , " + str(numClicked)
 				if event.type == pygame.QUIT:
 					sys.exit()
-
+			time.sleep(1)
 			pygame.display.flip()
 
 if __name__ == "__main__":
