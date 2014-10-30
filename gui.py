@@ -37,7 +37,7 @@ class Gui(threading.Thread):
 	while(True):
 	    for event in pygame.event.get():
 		if event.type == pygame.QUIT:
-		    sys.exit()
+		    print "gui wants to exit"
 	    
 	    screen.fill(black)
 	    pygame.display.flip()

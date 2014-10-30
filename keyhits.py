@@ -21,7 +21,7 @@ class KeyHits(threading.Thread):
 	fcntl.fcntl(fd, fcntl.F_SETFL, oldflags | os.O_NONBLOCK)
 	try:
 		print "herman"
-		while(sys in Global()):
+		while(1):
 		    try:
 		        char = sys.stdin.read(1)
 		        self.processIn(char)

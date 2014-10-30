@@ -6,6 +6,7 @@ from keyhits import *
 
 #Initialize threads
 gui = Gui()
+gui.daemon = True
 input = Input(gui)
 input.daemon = True
 keyhits = KeyHits(gui)
@@ -15,6 +16,8 @@ gui.start()
 input.start()
 keyhits.start()
 #Wait for gui to finish
-gui.join()
+try:
+    gui.join()
+except KeyboardInterrupt: sys.exit()
 print "Main terminated"
 
