@@ -19,20 +19,14 @@ class Input(threading.Thread):
         for p in self.pins:
             GPIO.setup(p, GPIO.IN)#input bits
 
-        gotIt = False
         while(1):
  	    print "time = " + str(GPIO.input(4))
 	    GPIO.wait_for_edge(4,GPIO.RISING)
-      #      if (GPIO.input(4)):
-	#	if (gotIt == False):
 	    print "%.20f" % time.time()
 	    pinvalues = []
-            gotIt = True
             for p in self.pins:
                 pinvalues.append(GPIO.input(p))
             self.processinput(pinvalues)
-       #     else:
-        #        gotIt = False
 
     def processinput(self, pinvalues):
         action = ""
