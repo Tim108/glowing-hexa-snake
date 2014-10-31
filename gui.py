@@ -16,7 +16,7 @@ class Gui(threading.Thread):
     o = 0
     guiState = 'menu'
     renderer = 0
-    states = ['menu', 'highscores', 'inGame', 'pause', 'gameOver']
+    states = ['menu', 'highscores', 'inGame', 'pause', 'gameOver', 'drawSnake']
     def __init__(self):
         threading.Thread.__init__(self)
 	#Geef mee in welke state de gui is, dan weet die wat er getekend moet worden
@@ -55,6 +55,7 @@ class Gui(threading.Thread):
     def addSnake(self, location):
 	self.guiState = Gui.states[2]
 	location = self.toXY(location)
+	self.renderer = Renderer(self.guiState)
 	self.renderer.drawSnake(location)
         print "Snake tile created at " + str(location)
 

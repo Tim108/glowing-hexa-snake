@@ -128,18 +128,18 @@ class Renderer(object):
 		
 		self.drawCandy((45, 15))
 		#self.drawSnake((15, 45))
-		while True:
-			for event in pygame.event.get():
-				if event.type == pygame.MOUSEBUTTONDOWN:
-					pos = pygame.mouse.get_pos()
-					xPos = pos[0]
-					yPos = pos[1]
-					if xPos >= 488 and xPos <= 618:
-						if yPos >= 15 and yPos <= 65:
-							self.drawPauseOverlay()
-						elif yPos >= 80 and yPos <= 130:
-                                                        sys.exit()
-			pygame.display.flip()
+#		while True:
+#			for event in pygame.event.get():
+#				if event.type == pygame.MOUSEBUTTONDOWN:
+#					pos = pygame.mouse.get_pos()
+#					xPos = pos[0]
+#					yPos = pos[1]
+#					if xPos >= 488 and xPos <= 618:
+#						if yPos >= 15 and yPos <= 65:
+#							self.drawPauseOverlay()
+#						elif yPos >= 80 and yPos <= 130:
+ #                                                       sys.exit()
+#			pygame.display.flip()
 	
 	def drawPauseOverlay(self):		
 		self.printScore('Pause')
