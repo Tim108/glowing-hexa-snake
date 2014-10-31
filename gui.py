@@ -32,6 +32,11 @@ class Gui(threading.Thread):
 	
 	#Teken het gehele scherm
 	self.renderer = Renderer(self.guiState)
+
+    def toXY(self, i)
+	x = i % 15
+	y = math.floor(i/15)
+	return (x,y)
 	
     #Input from fpga board
     def showScore(self, score):
