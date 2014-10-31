@@ -44,34 +44,29 @@ class Gui(threading.Thread):
     def showScore(self, score):
         print "Your score is " + str(score)
 	self.guiState = Gui.states[2]
-	self.renderer = Renderer(self.guiState)
 	self.renderer.printScore(score)
 
     def candy(self, location):
 	self.guiState = Gui.states[2]
 	location = self.toXY(location)
-	self.renderer = Renderer(self.guiState)
 	self.renderer.drawCandy(location)
         print "Candy discovered on tile " + str(location)
 
     def addSnake(self, location):
 	self.guiState = Gui.states[2]
 	location = self.toXY(location)
-	self.renderer = Renderer(self.guiState)
 	self.renderer.drawSnake(location)
         print "Snake tile created at " + str(location)
 
     def delSnake(self, location):
 	self.guiState = Gui.states[2]
 	location = self.toXY(location)
-	self.renderer = Renderer(self.guiState)
 	self.renderer.deleteSnake(location)
         print "Snake tile deleted at " + str(location)
 
     def gameOver(self, score):
 	try:
 		self.guiState = Gui.states[4]
-		self.renderer = Renderer(self.guiState)
 		self.renderer.drawGameOverOverlay()
 	except: print "stuk"
         print "GameOver and we don't care about the score"
