@@ -30,18 +30,26 @@ class Renderer(object):
 
 	def drawInGame(self):
 		self.drawField()
-		self.drawSnake()
-		self.drawCandy()
+		self.drawSnake((15, 45))
+		self.drawCandy((45, 15))
 
 	def drawSnake(self, location):
 		snakeImage = pygame.image.load('res/snakebase.png')
 		snakeSurface = pygame.Surface((640, 480))
 		snakeSurface.blit(snakeImage, (location))
+		self.fieldScreen.blit(snakeSurface, (0, 0))
+
+	def drawCandy(self, location):
+		candyImage = pygame.image.load('res/mouse.png')
+		candySurface = pygame.Surface((640, 480))
+		candySurface.blit(candyImage, (location))
+		self.fieldScreen.blit(candySurface, (0, 0))
 
 	def deleteSnake(self, location):
 		blackImage = pygame.image.load('res/black.png')
 		blackSurface = pygame.Surface((640, 480))
 		blackSurface.blit(blackImage, (location))
+		self.fieldScreen.blit(blackSurface, (0, 0))
 
 	def drawMenu(self):
         	size = width, height = 640, 480
@@ -118,6 +126,8 @@ class Renderer(object):
 		scoreText = scoreFont.render("Score: ", True, Renderer.white)
 		self.fieldScreen.blit(scoreText, (510, 365))
 
+		self.drawCandy((45, 15))
+		self.drawSnake((15, 45))
 		while True:
 			for event in pygame.event.get():
 				if event.type == pygame.MOUSEBUTTONDOWN:
@@ -210,4 +220,5 @@ class Renderer(object):
 		self.fieldScreen.blit(scoreNum, (510, 400))		
 
 if __name__ == "__main__":
-	rendererx = Renderer(Renderer.states[2]).drawField()
+	rendererx = Renderer(Renderer.states[2])
+	renderer = rendererx.drawSnake((15,15))
