@@ -13,9 +13,14 @@ from pygame.color import Color
 class Gui(threading.Thread):
     myInput = 0
     o = 0
+    guiState = 'menu'
     renderer = 0
+    states = ['menu', 'highscores', 'inGame', 'pause', 'gameOver']
     def __init__(self):
         threading.Thread.__init__(self)
+	#Geef mee in welke state de gui is, dan weet die wat er getekend moet worden
+	# de volgende states bestaan: 'menu', 'gameover', 'pause', 'highscores', 'inGame'
+	self.guiState = Gui.states[0]
 
     def run(self):
         lock = threading.Lock()
@@ -24,24 +29,30 @@ class Gui(threading.Thread):
 #       thread.start_new_thread( o.up, () )
 #       gui mag hier
 #       Eerst een scherm maken
-	self.renderer = Renderer(self)
-	self.showScore(5)
+	
+	#Teken het gehele scherm
+	self.renderer = Renderer(self.guiState)
 	
     #Input from fpga board
     def showScore(self, score):
         print "Your score is " + str(score)
+	self.guiState = Gui.states[2]
 	self.renderer.printScore(score)
 
     def candy(self, location):
+	self.guiState = Gui.states[2]
         print "Candy discovered on tile " + str(location)
 
     def addSnake(self, location):
+	self.guiSTate = Gui.state[2]
         print "Snake tile created at " + str(location)
 
     def delSnake(self, location):
+	self.guiState = Gui.state[2]
         print "Snake tile deleted at " + str(location)
 
     def gameOver(self, score):
+	self.guiState = Gui.states[4]
         print "GameOver and we don't care about the score"
 
     #Input from keyboard
