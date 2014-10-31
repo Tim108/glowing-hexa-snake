@@ -4,7 +4,7 @@ from renderer import *
 import threading
 import thread
 import time
-from math import floor
+import math
 
 import pygame
 
