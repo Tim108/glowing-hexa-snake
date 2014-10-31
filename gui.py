@@ -41,18 +41,22 @@ class Gui(threading.Thread):
 
     def candy(self, location):
 	self.guiState = Gui.states[2]
+	self.renderer.drawCandy(location)
         print "Candy discovered on tile " + str(location)
 
     def addSnake(self, location):
 	self.guiSTate = Gui.state[2]
+	self.renderer.drawSnake(location)
         print "Snake tile created at " + str(location)
 
     def delSnake(self, location):
 	self.guiState = Gui.state[2]
+	self.renderer.deleteSnake(location)
         print "Snake tile deleted at " + str(location)
 
     def gameOver(self, score):
 	self.guiState = Gui.states[4]
+	self.renderer.drawGameOverOverlay
         print "GameOver and we don't care about the score"
 
     #Input from keyboard

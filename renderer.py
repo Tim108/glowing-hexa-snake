@@ -13,18 +13,35 @@ class Renderer(object):
 			self.drawMenu()
 		elif guiState == Renderer.states[1]:
 			#In highscores
-			self.drawHighscores()
+			print "highscore state"
+			###self.drawHighscores()
 		elif guiState == Renderer.states[2]:
 			#In game, draw game/board/thingy
-			self.drawField()
+			self.drawInGame()
 		elif guiState == Renderer.states[3]:
 			#Game paused
 			self.drawPauseOverlay()
 		elif guiState == Renderer.states[4]:
 			#Game over
-			self.drawGameOverOverlay
+			print "In GameOver mode"
+			##self.drawGameOverOverlay
 		else:
 			print 'Should not be able to happen'
+
+	def drawInGame(self):
+		self.drawField()
+		self.drawSnake()
+		self.drawCandy()
+
+	def drawSnake(self, location):
+		snakeImage = pygame.image.load('res/snakebase.png')
+		snakeSurface = pygame.Surface((640, 480))
+		snakeSurface.blit(snakeImage, (location))
+
+	def deleteSnake(self, location):
+		blackImage = pygame.image.load('res/black.png')
+		blackSurface = pygame.Surface((640, 480))
+		blackSurface.blit(blackImage, (location))
 
 	def drawMenu(self):
         	size = width, height = 640, 480
@@ -163,7 +180,7 @@ class Renderer(object):
 		gamePausedLabel = font.render("Game paused", 1, Renderer.white)
 					
 		font = pygame.font.SysFont("Arial", 20)
-		pressPLabel = font.render("Press [P] to continue", 1, Renderer.white)
+		pressPLabel = font.render("Click anywhere to continue", 1, Renderer.white)
 							
 		xLoc = (640 - gamePausedLabel.get_width())/2
 		yLoc = (480 - (pressPLabel.get_height() + gamePausedLabel.get_height()))/2
@@ -177,8 +194,12 @@ class Renderer(object):
                 self.fieldScreen.blit(s, (0, 0))
 		
 		while True:
-			for event in pygame.event.get()
+			for event in pygame.event.get():
+				if event.type == pygame.MOUSEBUTTONDOWN:
+					self.drawInGame()					
 
+	def drawGameOverOverlay(self):
+		printScore("Game Over")
 		
 	def printScore(self, score):
 		#First make black overlay because maybe an old score has been printed already?
@@ -189,5 +210,4 @@ class Renderer(object):
 		self.fieldScreen.blit(scoreNum, (510, 400))		
 
 if __name__ == "__main__":
-	rendererx = Renderer().drawField()
-	renderer = Renderer().printScore(150)
+	rendererx = Renderer(Renderer.states[2]).drawField()
