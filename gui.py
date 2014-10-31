@@ -55,6 +55,7 @@ class Gui(threading.Thread):
     def addSnake(self, location):
 	self.guiState = Gui.states[2]
 	location = self.toXY(location)
+	self.renderer = Renderer(self.guiState)
 	self.renderer.drawSnake(location)
         print "Snake tile created at " + str(location)
 
@@ -67,7 +68,7 @@ class Gui(threading.Thread):
     def gameOver(self, score):
 	try:
 		self.guiState = Gui.states[4]
-		self.renderer.drawGameOverOverlay
+		self.renderer.drawGameOverOverlay()
 	except: print "stuk"
         print "GameOver and we don't care about the score"
 
