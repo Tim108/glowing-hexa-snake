@@ -21,6 +21,7 @@ class Gui(threading.Thread):
 	#Geef mee in welke state de gui is, dan weet die wat er getekend moet worden
 	# de volgende states bestaan: 'menu', 'gameover', 'pause', 'highscores', 'inGame'
 	self.guiState = Gui.states[0]
+	self.renderer = Renderer(self.guiState)
 
     def run(self):
         lock = threading.Lock()
@@ -31,7 +32,7 @@ class Gui(threading.Thread):
 #       Eerst een scherm maken
 	
 	#Teken het gehele scherm
-	self.renderer = Renderer(self.guiState)
+#	self.renderer = Renderer(self.guiState)
 
     def toXY(self, i):
 	x = i % 15
