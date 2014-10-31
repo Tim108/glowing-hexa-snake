@@ -1,4 +1,4 @@
-
+ 
 import pygame
 import time
 import sys
@@ -18,7 +18,7 @@ class Renderer(object):
 			###self.drawHighscores()
 		elif guiState == Renderer.states[2]:
 			#In game, draw game/board/thingy
-			self.drawField()
+			self.drawInGame()
 		elif guiState == Renderer.states[3]:
 			#Game paused
 			self.drawPauseOverlay()
@@ -34,28 +34,35 @@ class Renderer(object):
 			self.deleteSnake(location)
 		else:
 			print 'Should not be able to happen'
+		pygame.display.flip()
 
-	def drawInGame(self, location):
+	def drawInGame(self):
 		self.drawField()
-		self.drawSnake(location)
-		self.drawCandy(location)
+		#self.drawSnake(location)
 
 	def drawSnake(self, location):
 		self.drawField()
 		snakeImage = pygame.image.load('res/snakebase.png')
 		
-		self.fieldSurface.blit(snakeImage, (location))
+		self.fieldSurface.blit(snakeImage, location)
 		self.fieldScreen.blit(self.fieldSurface, (0, 0))
+		pygame.display.flip()
 
 	def drawCandy(self, location):
+		self.drawField()
 		candyImage = pygame.image.load('res/mouse.png')
-		self.fieldSurface.blit(candyImage, (location))
+		self.fieldSurface.blit(candyImage, location)
 		self.fieldScreen.blit(self.fieldSurface, (0, 0))
+		pygame.display.flip()
+		self.checkButtons()
 
 	def deleteSnake(self, location):
+		self.drawSnake((435,45))
 		blackImage = pygame.image.load('res/black.png')
-		self.fieldSurface.blit(blackImage, (location))
+		self.fieldSurface.blit(blackImage, location)
 		self.fieldScreen.blit(self.fieldSurface, (0, 0))
+		pygame.display.flip
+		self.checkButtons()
 
 	def drawMenu(self):
         	size = width, height = 640, 480
@@ -108,7 +115,7 @@ class Renderer(object):
 				if event.type == pygame.QUIT:
 					sys.exit()
 			pygame.display.flip()
-		print "Done with menu"
+	
 
 	def drawField(self):
 		#Make screen
@@ -135,23 +142,26 @@ class Renderer(object):
 		scoreText = scoreFont.render("Score: ", True, Renderer.white)
 		self.fieldSurface.blit(scoreText, (510, 365))
 		self.fieldScreen.blit(self.fieldSurface, (0, 0))
-		
+
+		pygame.display.flip()		
 		
 #		self.drawCandy((45, 15))
 		#self.drawSnake((15, 45))
-#		while True:
-#			for event in pygame.event.get():
-#				if event.type == pygame.MOUSEBUTTONDOWN:
-#					pos = pygame.mouse.get_pos()
-#					xPos = pos[0]
-#					yPos = pos[1]
-#					if xPos >= 488 and xPos <= 618:
-#						if yPos >= 15 and yPos <= 65:
-#							self.drawPauseOverlay()
-#						elif yPos >= 80 and yPos <= 130:
- #                                                       sys.exit()
-#			pygame.display.flip()
 	
+	def checkButtons(self):
+		while True:
+			for event in pygame.event.get():
+				if event.type == pygame.MOUSEBUTTONDOWN:
+					pos = pygame.mouse.get_pos()
+					xPos = pos[0]
+					yPos = pos[1]
+					if xPos >= 488 and xPos <= 618:
+						if yPos >= 15 and yPos <= 65:
+							self.drawPauseOverlay()
+						elif yPos >= 80 and yPos <= 130:
+                                                        sys.exit()
+		pygame.display.flip()
+
 	def drawPauseOverlay(self):		
 		self.printScore('Pause')
                 #Make overlay
@@ -163,7 +173,7 @@ class Renderer(object):
                 font = pygame.font.SysFont("Arial", 40)
                 gamePausedLabel = font.render("Game paused", 1, Renderer.white)
                 font = pygame.font.SysFont("Arial", 20)
-                pressPLabel = font.render("Press [P] to continue", 1, Renderer.white)
+                pressPLabel = font.render("Click to continue", 1, Renderer.white)
                 xLoc = (640 - gamePausedLabel.get_width())/2
                 yLoc = (480 - (pressPLabel.get_height() + gamePausedLabel.get_height()))/2
                 s.blit(gamePausedLabel, (xLoc, yLoc))
@@ -184,9 +194,11 @@ class Renderer(object):
 			for event in pygame.event.get():
 				if event.type == pygame.MOUSEBUTTONDOWN:
 					count += 1
-					if count>1:
+					if count>0:
 						count = 0
 						self.drawInGame()
+
+			pygame.display.flip()
 										
 
 	def drawGameOverOverlay(self):

@@ -16,7 +16,7 @@ class Gui(threading.Thread):
     o = 0
     guiState = 'menu'
     renderer = 0
-    states = ['menu', 'highscores', 'inGame', 'pause', 'gameOver', 'drawSnake']
+    states = ['menu', 'highscores', 'inGame', 'pause', 'gameOver', 'drawSnake', 'drawCandy', 'deleteSnake']
     def __init__(self):
         threading.Thread.__init__(self)
 	#Geef mee in welke state de gui is, dan weet die wat er getekend moet worden
@@ -37,8 +37,8 @@ class Gui(threading.Thread):
 	#self.addSnake(45)
 
     def toXY(self, i):
-	x = i % 15
-	y = math.floor(i/15)
+	x = (i % 15)*30  + 15
+	y = (math.floor(i/15))*30  + 15
 	return (x,y)
 	
     #Input from fpga board
@@ -48,20 +48,19 @@ class Gui(threading.Thread):
 	self.renderer.printScore(score)
 
     def candy(self, location):
-	self.guiState = Gui.states[2]
+	self.guiState = Gui.states[6]
 	location = self.toXY(location)
 	self.renderer.drawCandy(location)
         print "Candy discovered on tile " + str(location)
 
     def addSnake(self, location):
-	self.guiState = Gui.states[2]
+	self.guiState = Gui.states[5]
 	location = self.toXY(location)
-	self.renderer = Renderer(self.guiState, location)
 	self.renderer.drawSnake(location)
         print "Snake tile created at " + str(location)
 
     def delSnake(self, location):
-	self.guiState = Gui.states[2]
+	self.guiState = Gui.states[7]
 	location = self.toXY(location)
 	self.renderer.deleteSnake(location)
         print "Snake tile deleted at " + str(location)
@@ -100,5 +99,5 @@ class Gui(threading.Thread):
 
 if __name__ == '__main__':
 	gui = Gui()
-	gui.renderer = Renderer(gui.states[2], 0)
-	gui.addSnake(45)
+	gui.renderer = Renderer(gui.states[7], gui.toXY(29))
+	
