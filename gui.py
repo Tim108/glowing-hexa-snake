@@ -36,39 +36,31 @@ class Gui(threading.Thread):
 	self.renderer = Renderer(self.guiState, 0)
 	#self.addSnake(45)
 
-    def toXY(self, i):
-	x = (i % 15)*30  + 15
-	y = (math.floor(i/15))*30  + 15
-	return (x,y)
-	
     #Input from fpga board
     def showScore(self, score):
         print "Your score is " + str(score)
 	self.guiState = Gui.states[2]
-	self.renderer.printScore(score)
+	self.renderer.printScore(str(score))
 
     def candy(self, location):
 	self.guiState = Gui.states[6]
-	location = self.toXY(location)
 	self.renderer.drawCandy(location)
         print "Candy discovered on tile " + str(location)
 
     def addSnake(self, location):
 	self.guiState = Gui.states[5]
-	location = self.toXY(location)
 	self.renderer.drawSnake(location)
         print "Snake tile created at " + str(location)
 
     def delSnake(self, location):
 	self.guiState = Gui.states[7]
-	location = self.toXY(location)
 	self.renderer.deleteSnake(location)
         print "Snake tile deleted at " + str(location)
 
     def gameOver(self, score):
 	try:
 		self.guiState = Gui.states[4]
-		self.renderer.drawGameOverOverlay()
+		self.renderer = Renderer(gui.states[4], score)
 	except: print "stuk"
         print "GameOver and we don't care about the score"
 
@@ -99,5 +91,5 @@ class Gui(threading.Thread):
 
 if __name__ == '__main__':
 	gui = Gui()
-	gui.renderer = Renderer(gui.states[7], gui.toXY(29))
-	
+	gui.renderer = Renderer(gui.states[2], 42)
+	gui.showScore(95)
