@@ -6,8 +6,8 @@ import sys
 class Renderer(object):
 	black = 0, 0, 0
 	white = 255, 255, 255
-	states = ['menu', 'highscores', 'inGame', 'pause', 'gameOver']
-	def __init__(self, guiState):
+	states = ['menu', 'highscores', 'inGame', 'pause', 'gameOver', 'drawSnake', 'drawCandy', 'deleteSnake']
+	def __init__(self, guiState, location):
 		pygame.init()
 		if guiState == Renderer.states[0]:
 			#In menu
@@ -18,7 +18,7 @@ class Renderer(object):
 			###self.drawHighscores()
 		elif guiState == Renderer.states[2]:
 			#In game, draw game/board/thingy
-			self.drawInGame()
+			self.drawField()
 		elif guiState == Renderer.states[3]:
 			#Game paused
 			self.drawPauseOverlay()
@@ -26,16 +26,24 @@ class Renderer(object):
 			#Game over
 			print "In GameOver mode"
 			##self.drawGameOverOverlay
+		elif guiState == Renderer.states[5]:
+			self.drawSnake(location)
+		elif guiState == Renderer.states[6]:
+			self.drawCandy(location)
+		elif guiState == Renderer.states[7]:
+			self.deleteSnake(location)
 		else:
 			print 'Should not be able to happen'
 
-	def drawInGame(self):
+	def drawInGame(self, location):
 		self.drawField()
 		self.drawSnake(location)
 		self.drawCandy(location)
 
 	def drawSnake(self, location):
+		self.drawField()
 		snakeImage = pygame.image.load('res/snakebase.png')
+		
 		self.fieldSurface.blit(snakeImage, (location))
 		self.fieldScreen.blit(self.fieldSurface, (0, 0))
 
@@ -86,6 +94,8 @@ class Renderer(object):
 						if yPos >= 130 and yPos <= 180:
 							numClicked = numClicked + 1
 							self.drawField()
+							return 0
+							#sys.exit()
 #							print "Start game has been clicked"
 						elif yPos >= 180 and yPos <= 240:
 							numClicked = numClicked + 1
@@ -98,6 +108,7 @@ class Renderer(object):
 				if event.type == pygame.QUIT:
 					sys.exit()
 			pygame.display.flip()
+		print "Done with menu"
 
 	def drawField(self):
 		#Make screen
@@ -126,7 +137,7 @@ class Renderer(object):
 		self.fieldScreen.blit(self.fieldSurface, (0, 0))
 		
 		
-		self.drawCandy((45, 15))
+#		self.drawCandy((45, 15))
 		#self.drawSnake((15, 45))
 #		while True:
 #			for event in pygame.event.get():
@@ -190,5 +201,4 @@ class Renderer(object):
 		self.fieldScreen.blit(scoreNum, (510, 400))		
 
 if __name__ == "__main__":
-	rendererx = Renderer(Renderer.states[2])
-	renderer = rendererx.drawSnake((15,15))
+	renderer = Renderer()

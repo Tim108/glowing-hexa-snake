@@ -33,7 +33,8 @@ class Gui(threading.Thread):
 #       Eerst een scherm maken
 	
 	#Teken het gehele scherm
-	self.renderer = Renderer(self.guiState)
+	self.renderer = Renderer(self.guiState, 0)
+	#self.addSnake(45)
 
     def toXY(self, i):
 	x = i % 15
@@ -55,7 +56,7 @@ class Gui(threading.Thread):
     def addSnake(self, location):
 	self.guiState = Gui.states[2]
 	location = self.toXY(location)
-	self.renderer = Renderer(self.guiState)
+	self.renderer = Renderer(self.guiState, location)
 	self.renderer.drawSnake(location)
         print "Snake tile created at " + str(location)
 
@@ -96,3 +97,8 @@ class Gui(threading.Thread):
     def keyReset(self):
 	print "Reset is pushed"
 	self.o.bReset()
+
+if __name__ == '__main__':
+	gui = Gui()
+	gui.renderer = Renderer(gui.states[2], 0)
+	gui.addSnake(45)
