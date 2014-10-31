@@ -1,3 +1,4 @@
+
 import pygame
 import time
 import sys
@@ -30,26 +31,23 @@ class Renderer(object):
 
 	def drawInGame(self):
 		self.drawField()
-		self.drawSnake((15, 45))
-		self.drawCandy((45, 15))
+		self.drawSnake(location)
+		self.drawCandy(location)
 
 	def drawSnake(self, location):
 		snakeImage = pygame.image.load('res/snakebase.png')
-		snakeSurface = pygame.Surface((640, 480))
-		snakeSurface.blit(snakeImage, (location))
-		self.fieldScreen.blit(snakeSurface, (0, 0))
+		self.fieldSurface.blit(snakeImage, (location))
+		self.fieldScreen.blit(self.fieldSurface, (0, 0))
 
 	def drawCandy(self, location):
 		candyImage = pygame.image.load('res/mouse.png')
-		candySurface = pygame.Surface((640, 480))
-		candySurface.blit(candyImage, (location))
-		self.fieldScreen.blit(candySurface, (0, 0))
+		self.fieldSurface.blit(candyImage, (location))
+		self.fieldScreen.blit(self.fieldSurface, (0, 0))
 
 	def deleteSnake(self, location):
 		blackImage = pygame.image.load('res/black.png')
-		blackSurface = pygame.Surface((640, 480))
-		blackSurface.blit(blackImage, (location))
-		self.fieldScreen.blit(blackSurface, (0, 0))
+		self.fieldSurface.blit(blackImage, (location))
+		self.fieldScreen.blit(self.fieldSurface, (0, 0))
 
 	def drawMenu(self):
         	size = width, height = 640, 480
@@ -106,28 +104,30 @@ class Renderer(object):
 		size = width, height = 640, 480
 		self.fieldScreen = pygame.display.set_mode(size)
 		#Make surface
-		fieldSurface = pygame.Surface(size)
-		fieldSurface.fill(Renderer.black)
+		self.fieldSurface = pygame.Surface(size)
+		self.fieldSurface.fill(Renderer.black)
 		#Draw grid
 		grey = 96, 96, 96
 		for c in range(0, 16):
-			pygame.draw.line(fieldSurface, grey, [c*30+15, 15], [c*30+15, 15*30+15])
-			pygame.draw.line(fieldSurface, grey, [15, c*30+15], [15*30+15, c*30+15])
-		self.fieldScreen.blit(fieldSurface, (0,0))
+			pygame.draw.line(self.fieldSurface, grey, [c*30+15, 15], [c*30+15, 15*30+15])
+			pygame.draw.line(self.fieldSurface, grey, [15, c*30+15], [15*30+15, c*30+15])
+		self.fieldScreen.blit(self.fieldSurface, (0,0))
 		#Draw buttons
 		fieldButtons = ['res/Pause.png', 'res/Exit.png']
 		for x in range (0, len(fieldButtons)):
 			pathField = fieldButtons[x]
 			imageField = pygame.image.load(pathField)
-			fieldSurface.blit(imageField, (488, 15+x*65))
-		self.fieldScreen.blit(fieldSurface, (0,0))
+			self.fieldSurface.blit(imageField, (488, 15+x*65))
+		self.fieldScreen.blit(self.fieldSurface, (0,0))
 		#Draw "Score:"
 		scoreFont = pygame.font.SysFont("Arial", 30)
 		scoreText = scoreFont.render("Score: ", True, Renderer.white)
-		self.fieldScreen.blit(scoreText, (510, 365))
-
+		self.fieldSurface.blit(scoreText, (510, 365))
+		self.fieldScreen.blit(self.fieldSurface, (0, 0))
+		
+		
 		self.drawCandy((45, 15))
-		self.drawSnake((15, 45))
+		#self.drawSnake((15, 45))
 		while True:
 			for event in pygame.event.get():
 				if event.type == pygame.MOUSEBUTTONDOWN:
@@ -160,53 +160,23 @@ class Renderer(object):
                 y2Loc = (480 + pressPLabel.get_height())/2
 #		self.printScore('Pause')
 		#Make overlay
-		s = pygame.Surface((640,480))
-		s.set_alpha(128)
-		s.fill(Renderer.black)
 		#fieldScreen.blit(s, (0,0))
 		#Make text "Game paused" on overlay
-		font = pygame.font.SysFont("Arial", 40)
-		gamePausedLabel = font.render("Game paused", 1, Renderer.white)
-			
-		font = pygame.font.SysFont("Arial", 20)
-		pressPLabel = font.render("Press [P] to continue", 1, Renderer.white)
-				
-		xLoc = (640 - gamePausedLabel.get_width())/2
-		yLoc = (480 - (pressPLabel.get_height() + gamePausedLabel.get_height()))/2
-		s.blit(gamePausedLabel, (xLoc, yLoc))
-	
-		x2Loc = (640 - pressPLabel.get_width())/2
-		y2Loc = (480 + pressPLabel.get_height())/2
 		s.blit(pressPLabel, (x2Loc, y2Loc))
 		self.fieldScreen.blit(s, (0, 0))
 #	printScore('Pause')
 		#Make overlay
-		s = pygame.Surface((640,480))
-		s.set_alpha(128)
-		s.fill(Renderer.black)
 		#fieldScreen.blit(s, (0,0))
 		#Make text "Game paused" on overlay
-		font = pygame.font.SysFont("Arial", 40)
-		gamePausedLabel = font.render("Game paused", 1, Renderer.white)
-					
-		font = pygame.font.SysFont("Arial", 20)
-		pressPLabel = font.render("Click anywhere to continue", 1, Renderer.white)
-							
-		xLoc = (640 - gamePausedLabel.get_width())/2
-		yLoc = (480 - (pressPLabel.get_height() + gamePausedLabel.get_height()))/2
-		s.blit(gamePausedLabel, (xLoc, yLoc))
-
-		x2Loc = (640 - pressPLabel.get_width())/2
-		y2Loc = (480 + pressPLabel.get_height())/2
-		s.blit(pressPLabel, (x2Loc, y2Loc))
-		self.fieldScreen.blit(s, (0, 0))
-		s.blit(pressPLabel, (x2Loc, y2Loc))
-                self.fieldScreen.blit(s, (0, 0))
-		
+		count = 0
 		while True:
 			for event in pygame.event.get():
 				if event.type == pygame.MOUSEBUTTONDOWN:
-					self.drawInGame()					
+					count += 1
+					if count>1:
+						count = 0
+						self.drawInGame()
+										
 
 	def drawGameOverOverlay(self):
 		printScore("Game Over")

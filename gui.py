@@ -21,7 +21,7 @@ class Gui(threading.Thread):
 	#Geef mee in welke state de gui is, dan weet die wat er getekend moet worden
 	# de volgende states bestaan: 'menu', 'gameover', 'pause', 'highscores', 'inGame'
 	self.guiState = Gui.states[0]
-	self.renderer = Renderer(self.guiState)
+#	self.renderer = Renderer(self.guiState)
 
     def run(self):
         lock = threading.Lock()
@@ -32,7 +32,7 @@ class Gui(threading.Thread):
 #       Eerst een scherm maken
 	
 	#Teken het gehele scherm
-#	self.renderer = Renderer(self.guiState)
+	self.renderer = Renderer(self.guiState)
 
     def toXY(self, i):
 	x = i % 15
@@ -47,16 +47,19 @@ class Gui(threading.Thread):
 
     def candy(self, location):
 	self.guiState = Gui.states[2]
+	location = toXY(location)
 	self.renderer.drawCandy(location)
         print "Candy discovered on tile " + str(location)
 
     def addSnake(self, location):
 	self.guiSTate = Gui.state[2]
+	location = toXY(location)
 	self.renderer.drawSnake(location)
         print "Snake tile created at " + str(location)
 
     def delSnake(self, location):
 	self.guiState = Gui.state[2]
+	location = toXY(location)
 	self.renderer.deleteSnake(location)
         print "Snake tile deleted at " + str(location)
 
