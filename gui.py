@@ -52,13 +52,13 @@ class Gui(threading.Thread):
         print "Candy discovered on tile " + str(location)
 
     def addSnake(self, location):
-	self.guiSTate = Gui.state[2]
+	self.guiState = Gui.states[2]
 	location = toXY(location)
 	self.renderer.drawSnake(location)
         print "Snake tile created at " + str(location)
 
     def delSnake(self, location):
-	self.guiState = Gui.state[2]
+	self.guiState = Gui.states[2]
 	location = toXY(location)
 	self.renderer.deleteSnake(location)
         print "Snake tile deleted at " + str(location)
