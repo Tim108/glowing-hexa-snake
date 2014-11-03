@@ -82,6 +82,7 @@ class Renderer(threading.Thread):
 	#Draw snake WITH new location
 	def drawSnake(self, location):
 		self.drawField()
+		self.drawCandyArray()
 		self.snake.insert(0, location)
 		snakeImage = pygame.image.load('res/snakebase.png')
 		snakeHeadImage = pygame.image.load('res/snakehead.png')
@@ -279,7 +280,6 @@ class Renderer(threading.Thread):
 										
 
 	def drawGameOverOverlay(self, score):
-		self.drawField()
 		s = pygame.Surface(self.size)
 		s.set_alpha(128)
 		s.fill(Renderer.black)
@@ -319,7 +319,7 @@ class Renderer(threading.Thread):
 		if self.candy != -1:
 			self.drawCandyArray()
 		scoreFont = pygame.font.SysFont("Arial", 30)
-		scoreNum = scoreFont.render(score, True, Renderer.white)
+		scoreNum = scoreFont.render(str(score), True, Renderer.white)
 		self.fieldScreen.blit(scoreNum, (510, 400))		
 		pygame.display.flip()
 

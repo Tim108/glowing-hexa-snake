@@ -7,13 +7,16 @@ from keyhits import *
 #Initialize threads
 gui = Gui()
 gui.daemon = True
-input = Input(gui)
-input.daemon = True
+inputProd = InputProducer()
+inputProd.daemon = True
+inputCons = InputConsumer()
+inputCons.daemon = True
 keyhits = KeyHits(gui)
 keyhits.daemon = True
 #Start threads
 gui.start()
-input.start()
+inputProd.start()
+inputCons.start()
 keyhits.start()
 #Wait for gui to finish
 try:
