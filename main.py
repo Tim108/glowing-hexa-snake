@@ -11,16 +11,18 @@ inputProd = InputProducer()
 inputProd.daemon = True
 inputCons = InputConsumer()
 inputCons.daemon = True
-keyhits = KeyHits(gui)
-keyhits.daemon = True
+#keyhits = KeyHits(gui)
+#keyhits.daemon = True
 #Start threads
 gui.start()
 inputProd.start()
 inputCons.start()
-keyhits.start()
+#keyhits.start()
 #Wait for gui to finish
 try:
     gui.join()
 except KeyboardInterrupt: sys.exit()
+except AttributeError: print "Moeilijk afsluiten is niet makkelijk"
+print "quack"
 print "Main terminated"
 

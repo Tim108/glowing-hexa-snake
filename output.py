@@ -24,40 +24,32 @@ class Output(threading.Thread):
 	GPIO.output(3, GPIO.LOW)
 
     def up(self):
-	print "setting pins for up"
 	self.lock.acquire()
 	self.reset()
 	GPIO.output(3, GPIO.HIGH)
 	self.lock.release()
-	print "pins set for up"
 
     def down(self):
-	print "setting pins for down"
 	self.lock.acquire()
 	self.reset()
 	GPIO.output(14, GPIO.HIGH)
 	GPIO.output(3, GPIO.HIGH)
 	self.lock.release()
-	print "pins set for down"
 
     def left(self):
-	print "setting pins for left"
 	self.lock.acquire()
 	self.reset()
 	GPIO.output(15, GPIO.HIGH)
 	GPIO.output(3, GPIO.HIGH)
 	self.lock.release()
-	print "pins set for left"
 
     def right(self):
-	print "setting pins for right"
 	self.lock.acquire()
 	self.reset()
 	GPIO.output(14, GPIO.HIGH)
 	GPIO.output(15, GPIO.HIGH)
 	GPIO.output(3, GPIO.HIGH)
 	self.lock.release()
-	print "pins set for right"
 
     def bPause(self):
 	self.lock.acquire()
@@ -65,7 +57,6 @@ class Output(threading.Thread):
 	GPIO.output(2, GPIO.HIGH)
 	GPIO.output(3, GPIO.HIGH)
 	self.lock.release()
-	print "pause sent"
 
     def bReset(self):
 	self.lock.acquire()

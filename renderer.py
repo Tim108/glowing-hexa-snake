@@ -24,7 +24,7 @@ class Renderer(threading.Thread):
                 size = width, height = 640, 480
 		self.o = output		
 		self.changeState(self.states[0], 0)
-		self.score = 42 # HAHA
+		self.score = 0 # HAHA
 
 	def changeState(self, guiState, num):
 		if guiState == Renderer.states[0]:
@@ -203,7 +203,7 @@ class Renderer(threading.Thread):
 						self.drawSnake(l)
 					elif n == 1:
 						self.deleteSnake(l)
-					elif n == 7:
+					elif n == 3:
 						self.drawGameOverOverlay(l)
 						highscore.add(l)
 
@@ -262,6 +262,7 @@ class Renderer(threading.Thread):
 	#	pygame.display.flip()
 
 	def drawPauseOverlay(self):		
+		print "pause"
                 #Make overlay
                 s = pygame.Surface(self.size)
                 s.set_alpha(128)
@@ -300,6 +301,7 @@ class Renderer(threading.Thread):
 										
 
 	def drawGameOverOverlay(self, score):
+		print "Game Over"
 		s = pygame.Surface(self.size)
 		s.set_alpha(128)
 		s.fill(Renderer.black)

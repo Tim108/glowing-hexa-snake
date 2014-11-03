@@ -1,19 +1,26 @@
-
-f = "scores.txt"
+#
+fs = "scores.txt"
 
 def get():
-	open(f, "r")
+	f = open(fs, "r")
 	scores = []
-	for i in range(10):
-		scores[i] = f.readLine()
+	for line in f:
+		scores.append(line)
 	f.close()
+	return scores
 
 def add(score):
-	open(f, "w")
+	f = open(fs, "r+")
 	scores = get()
-	scores.append(str(score))
+	print scores
+	scores.append(str(score) + "n")
+	print scores
 	scores.sort(reverse=True)
+	print scores
+	f.truncate()
 	for i in range(10):
-		f.write(str(score) + "\n")
+		if(i < len(scores)):
+			a = str(scores[i])
+			f.write(a)
 	f.close()
 

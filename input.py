@@ -56,12 +56,10 @@ class InputConsumer(threading.Thread):
 
 	for i in range(3,11): #Number (location) that's being sent
 		location = location + str(val[i])
-	print "bit array for location = " + str(int(location, 2))
 	location = int(location, 2) #Convert the binary string to int
 
 	for i in range(0,3): #What the number represents
  		action = action + str(val[i])
-	print "bit array for action = " + str(int(action, 2))
 	action = int(action, 2) #Convert the binary string to int
 
 	return action, location
