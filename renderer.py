@@ -3,46 +3,55 @@ import math
 import pygame
 import time
 import sys
+import threading
 
-class Renderer(object):
+class Renderer(threading.Thread):
 	size = 640, 480
 	black = 0, 0, 0
 	white = 255, 255, 255
 	states = ['menu', 'highscores', 'inGame', 'pause', 'gameOver', 'drawSnake', 'drawCandy', 'deleteSnake']
-
+	o = 0
 	candy = -1
 	snake = []
+	state = 0
 
-	def __init__(self, guiState, num):
+	def __init__(self, output):
+		print "renderer init"
+		threading.Thread.__init__(self)
 		pygame.init()
                 size = width, height = 640, 480
-		
+		self.o = output		
+		self.changeState(self.states[0], 0)
+
+	def changeState(self, guiState, num):
 		if guiState == Renderer.states[0]:
-			#In menu
-			self.drawMenu()
-		elif guiState == Renderer.states[1]:
-			#In highscores
-			print "highscore state"
-			###self.drawHighscores()
-		elif guiState == Renderer.states[2]:
-			#In game, draw game/board/thingy
-			self.drawStartGame()
-		elif guiState == Renderer.states[3]:
-			#Game paused
-			self.drawPauseOverlay()
-		elif guiState == Renderer.states[4]:
-			#Game over
-			#print "In GameOver mode"
-			self.drawGameOverOverlay(num)
-		elif guiState == Renderer.states[5]:
-			self.drawSnake(num)
-		elif guiState == Renderer.states[6]:
-			self.drawCandy(num)
-		elif guiState == Renderer.states[7]:
-			self.deleteSnake(num)
-		else:
-			print 'Should not be able to happen'
-		pygame.display.flip()
+                        #In menu
+                        self.drawMenu()
+			print "changed state to menu"
+                elif guiState == Renderer.states[1]:
+                        #In highscores
+                        print "highscore state"
+                        ###self.drawHighscores()
+                elif guiState == Renderer.states[2]:
+                        #In game, draw game/board/thingy
+                        self.drawStartGame()
+                elif guiState == Renderer.states[3]:
+                        #Game paused
+                        self.drawPauseOverlay()
+                elif guiState == Renderer.states[4]:
+                        #Game over
+                        #print "In GameOver mode"
+                        self.drawGameOverOverlay(num)
+                elif guiState == Renderer.states[5]:
+                        self.drawSnake(num)
+                elif guiState == Renderer.states[6]:
+                        self.drawCandy(num)
+                elif guiState == Renderer.states[7]:
+                        self.deleteSnake(num)
+                else:
+                        print 'Should not be able to happen'
+                pygame.display.flip()
+
 
 	def toXY(self, i):
         	x = (i % 15)*30  + 15
@@ -52,12 +61,9 @@ class Renderer(object):
 
 	def drawStartGame(self):
 		self.drawField()
-		self.snake.append(96)
-		self.snake.append(97)
-		self.snake.append(112)
 		self.drawSnakeArray()
 		self.printScore(str(0))
-		time.sleep(4)
+		self.o.bStart()
 		#self.drawSnake(location)
 
 	#Draw snake WITHOUT new location, just the snake array that is known by the class
@@ -87,6 +93,14 @@ class Renderer(object):
 		self.fieldScreen.blit(self.fieldSurface, (0, 0))
 		pygame.display.flip()
 
+	def drawCandyArray(self):
+		self.drawField()
+		self.drawSnakeArray()
+		candyImage = pygame.image.load('res/mouse.png')
+		self.fieldSurface.blit(candyImage, self.toXY(self.candy))
+		self.fieldScreen.blit(self.fieldSurface, (0, 0))
+		pygame.display.flip()
+
 	def drawCandy(self, location):
 		self.candy = location
 		self.drawField()
@@ -97,7 +111,8 @@ class Renderer(object):
 		pygame.display.flip()
 
 	def deleteSnake(self, location):
-		self.snake.remove(location)
+		if location in self.snake:
+			self.snake.remove(location)
 #		self.drawSnake(location)
 #		time.sleep(2)
 #		print "done sleeping"
@@ -113,6 +128,7 @@ class Renderer(object):
 		#self.checkButtons()
 
 	def drawMenu(self):
+		print "Drawing menu"
 		self.screen = pygame.display.set_mode(self.size)
 		#Make surface
 		mySurface = pygame.Surface(self.size)
@@ -131,8 +147,11 @@ class Renderer(object):
 
 		self.screen.blit(mySurface, (0, 0))
 
+	def run(self):
+		print "banaantjes"
 		totalClicks = 0
 		numClicked = 0
+
         	while(True):
 	            	for event in pygame.event.get():
 				#print "Blablabla"
@@ -145,21 +164,34 @@ class Renderer(object):
 					#Check where the mouse has clicked
 					if xPos >= 155 and xPos <= 255:
 						if yPos >= 130 and yPos <= 180:
-							numClicked = numClicked + 1
-							self.drawField()
+							self.drawStartGame()
 							#sys.exit()
 #							print "Start game has been clicked"
 						elif yPos >= 180 and yPos <= 240:
-							numClicked = numClicked + 1
-#							print "Highscores has been clicked"
+							print "Highscores has been clicked"
 						elif yPos >= 240 and yPos <= 300:
-							numClicked = numClicked + 1
 #							print "Exit game has been clicked"
 							sys.exit()
 							print str(totalClicks) + " , " + str(numClicked)
+
+				if event.type == pygame.USEREVENT:
+					n = event.action
+					l = event.location
+					if n == 4:
+						self.printScore(l)
+					elif n == 2:
+						self.drawCandy(l)
+					elif n == 6:
+						self.drawSnake(l)
+					elif n == 1:
+						self.deleteSnake(l)
+					elif n == 7:
+						self.drawGameOverOverlay(l)
+
 				if event.type == pygame.QUIT:
 					sys.exit()
-			pygame.display.flip()
+					
+		print "Uit while"
 	
 
 	def drawField(self):
@@ -285,7 +317,7 @@ class Renderer(object):
 		self.drawField()
 		self.drawSnakeArray()
 		if self.candy != -1:
-			self.drawCandy()
+			self.drawCandyArray()
 		scoreFont = pygame.font.SysFont("Arial", 30)
 		scoreNum = scoreFont.render(score, True, Renderer.white)
 		self.fieldScreen.blit(scoreNum, (510, 400))		
