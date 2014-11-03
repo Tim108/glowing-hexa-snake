@@ -3,6 +3,7 @@ from gui import *
 from Queue import Queue
 import threading
 import RPi.GPIO as GPIO
+import time
 
 queue = Queue()
 
@@ -31,6 +32,7 @@ class InputProducer(threading.Thread):
                     		pinvalues.append(GPIO.input(p))
 
 			queue.put(pinvalues)
+
 
 
 class InputConsumer(threading.Thread):

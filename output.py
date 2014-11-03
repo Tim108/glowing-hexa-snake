@@ -65,6 +65,7 @@ class Output(threading.Thread):
 	GPIO.output(2, GPIO.HIGH)
 	GPIO.output(3, GPIO.HIGH)
 	self.lock.release()
+	print "pause sent"
 
     def bReset(self):
 	self.lock.acquire()
