@@ -4,6 +4,7 @@ from renderer import *
 import threading
 import thread
 import time
+import math
 
 import pygame
 
@@ -15,12 +16,13 @@ class Gui(threading.Thread):
     o = 0
     guiState = 'menu'
     renderer = 0
-    states = ['menu', 'highscores', 'inGame', 'pause', 'gameOver']
+    states = ['menu', 'highscores', 'inGame', 'pause', 'gameOver', 'drawSnake', 'drawCandy', 'deleteSnake']
     def __init__(self):
         threading.Thread.__init__(self)
 	#Geef mee in welke state de gui is, dan weet die wat er getekend moet worden
 	# de volgende states bestaan: 'menu', 'gameover', 'pause', 'highscores', 'inGame'
 	self.guiState = Gui.states[0]
+#	self.renderer = Renderer(self.guiState)
 
     def run(self):
         lock = threading.Lock()
@@ -31,37 +33,35 @@ class Gui(threading.Thread):
 #       Eerst een scherm maken
 	
 	#Teken het gehele scherm
-	self.renderer = Renderer(self.guiState)
+	self.renderer = Renderer(self.guiState, 0)
+	#self.addSnake(45)
 
-    def toXY(self, i):
-	x = i % 15
-	y = math.floor(i/15)
-	return (x,y)
-	
     #Input from fpga board
     def showScore(self, score):
         print "Your score is " + str(score)
 	self.guiState = Gui.states[2]
-	self.renderer.printScore(score)
+	self.renderer.printScore(str(score))
 
     def candy(self, location):
-	self.guiState = Gui.states[2]
+	self.guiState = Gui.states[6]
 	self.renderer.drawCandy(location)
         print "Candy discovered on tile " + str(location)
 
     def addSnake(self, location):
-	self.guiSTate = Gui.state[2]
+	self.guiState = Gui.states[5]
 	self.renderer.drawSnake(location)
         print "Snake tile created at " + str(location)
 
     def delSnake(self, location):
-	self.guiState = Gui.state[2]
+	self.guiState = Gui.states[7]
 	self.renderer.deleteSnake(location)
         print "Snake tile deleted at " + str(location)
 
     def gameOver(self, score):
-	self.guiState = Gui.states[4]
-	self.renderer.drawGameOverOverlay
+	try:
+		self.guiState = Gui.states[4]
+		self.renderer = Renderer(gui.states[4], score)
+	except: print "stuk"
         print "GameOver and we don't care about the score"
 
     #Input from keyboard
@@ -88,3 +88,8 @@ class Gui(threading.Thread):
     def keyReset(self):
 	print "Reset is pushed"
 	self.o.bReset()
+
+if __name__ == '__main__':
+	gui = Gui()
+	gui.renderer = Renderer(gui.states[2], 42)
+	gui.showScore(95)

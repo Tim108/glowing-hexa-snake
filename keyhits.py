@@ -2,6 +2,7 @@
 import threading
 import termios, fcntl, sys, os
 import threading
+import time
 
 class KeyHits(threading.Thread):
     gui = 0
