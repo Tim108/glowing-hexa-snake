@@ -12,11 +12,8 @@ def get():
 def add(score):
 	f = open(fs, "r+")
 	scores = get()
-	print scores
-	scores.append(str(score) + "n")
-	print scores
-	scores.sort(reverse=True)
-	print scores
+	scores.append(str(score) + "\n")
+	scores.sort(reverse=True, key=int)
 	f.truncate()
 	for i in range(10):
 		if(i < len(scores)):

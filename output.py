@@ -18,6 +18,7 @@ class Output(threading.Thread):
 	self.reset()
 
     def reset(self):
+	print "reset"
 	GPIO.output(14, GPIO.LOW)
 	GPIO.output(15, GPIO.LOW)
 	GPIO.output(2, GPIO.LOW)

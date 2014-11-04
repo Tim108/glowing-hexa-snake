@@ -1,5 +1,6 @@
 #catch input
 from gui import *
+from output import *
 from Queue import Queue
 import threading
 import RPi.GPIO as GPIO

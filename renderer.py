@@ -43,7 +43,7 @@ class Renderer(threading.Thread):
                         self.drawPauseOverlay()
                 elif guiState == Renderer.states[4]:
                         #Game over
-                        #print "In GameOver mode"
+                        print "In GameOver mode"
                         self.drawGameOverOverlay(num)
                 elif guiState == Renderer.states[5]:
                         self.drawSnake(num)
@@ -67,6 +67,8 @@ class Renderer(threading.Thread):
 		self.drawSnakeArray()
 		self.printScore(str(0))
 		self.o.bStart()
+		time.sleep(0.1)
+		self.o.reset()
 		#self.drawSnake(location)
 
 	#Draw snake WITHOUT new location, just the snake array that is known by the class
@@ -100,18 +102,20 @@ class Renderer(threading.Thread):
 	def drawCandyArray(self):
 		self.drawField()
 		self.drawSnakeArray()
-		candyImage = pygame.image.load('res/mouse.png')
-		self.fieldSurface.blit(candyImage, self.toXY(self.candy))
-		self.fieldScreen.blit(self.fieldSurface, (0, 0))
+		if self.candy not in self.snake:
+			candyImage = pygame.image.load('res/mouse.png')
+			self.fieldSurface.blit(candyImage, self.toXY(self.candy))
+			self.fieldScreen.blit(self.fieldSurface, (0, 0))
 		#pygame.display.flip()
 
 	def drawCandy(self, location):
 		self.candy = location
 		self.drawField()
 		self.drawSnakeArray()
-		candyImage = pygame.image.load('res/mouse.png')
-		self.fieldSurface.blit(candyImage, self.toXY(location))
-		self.fieldScreen.blit(self.fieldSurface, (0, 0))
+		if self.candy not in self.snake:
+			candyImage = pygame.image.load('res/mouse.png')
+			self.fieldSurface.blit(candyImage, self.toXY(location))
+			self.fieldScreen.blit(self.fieldSurface, (0, 0))
 		#pygame.display.flip()
 
 	def deleteSnake(self, location):
@@ -130,6 +134,40 @@ class Renderer(threading.Thread):
 
 		#pygame.display.flip()
 		#self.checkButtons()
+
+	def showHighscores(self):
+		print "Showing highscores"
+		self.screen = pygame.display.set_mode((240, 420))
+		mySurface = pygame.Surface((240, 420))
+		mySurface.fill(self.black)
+		myImage = pygame.image.load('res/Exit.png')
+		mySurface.blit(myImage, (50, 355))
+		self.screen.blit(mySurface, (0, 0))
+		scores = get()
+		scoreFont = pygame.font.SysFont("Arial", 30)
+                scoreText = scoreFont.render('Highscores' , True, Renderer.white)
+                mySurface.blit(scoreText, (15, 15))
+                self.screen.blit(mySurface, (0, 0))
+
+		print scores
+		i = 0
+		for i in range(0, len(scores)):
+			scoreFont = pygame.font.SysFont("Arial", 30)
+                	scoreText = scoreFont.render(str(i+1)+". "+str(scores[i].strip('\n')) , True, Renderer.white)
+                	mySurface.blit(scoreText, (15, 15+(int(i)+1)*30))
+                	self.screen.blit(mySurface, (0, 0))
+		pygame.display.flip()
+		notClicked = True
+		while notClicked:
+                        for event in pygame.event.get():
+                                if event.type == pygame.MOUSEBUTTONDOWN:
+                                        pos = pygame.mouse.get_pos()
+                                        xPos = pos[0]
+                                        yPos = pos[1]
+                                        if xPos >= 50 and xPos <= 150:
+                                                if yPos >= 370 and yPos <= 420:
+							notClicked = not notClicked
+		
 
 	def drawMenu(self):
 		print "Drawing menu"
@@ -151,6 +189,7 @@ class Renderer(threading.Thread):
 
 		self.screen.blit(mySurface, (0, 0))
 
+
 	def run(self):
 		print "banaantjes"
 		totalClicks = 0
@@ -160,20 +199,20 @@ class Renderer(threading.Thread):
 			time.sleep(0.05)
 	            	for event in pygame.event.get():
 				#print "Blablabla"
-				if event.type == pygame.KEYDOWN:
-					if event.key == pygame.K_LEFT:
-						self.o.left()
-					elif event.key == pygame.K_RIGHT:
-						self.o.right()
-					elif event.key == pygame.K_UP:
-						self.o.up()
-					elif event.key == pygame.K_DOWN:
-						self.o.down()
-					elif event.key == pygame.K_p:
-						self.o.bPause()
-					elif event.key == pygame.K_r:
-						self.o.bReset()
-				elif event.type == pygame.MOUSEBUTTONDOWN:
+				#if event.type == pygame.KEYDOWN:
+				#	if event.key == pygame.K_LEFT:
+				#		self.o.left()
+				#	elif event.key == pygame.K_RIGHT:
+				#		self.o.right()
+				#	elif event.key == pygame.K_UP:
+				#		self.o.up()
+				#	elif event.key == pygame.K_DOWN:
+				#		self.o.down()
+				#	elif event.key == pygame.K_p:
+				#		self.o.bPause()
+				#	elif event.key == pygame.K_r:
+				#		self.o.bReset()
+				if event.type == pygame.MOUSEBUTTONDOWN:
 					totalClicks = totalClicks + 1
 					#print "Mouse gets (de)pressed"
 					pos = pygame.mouse.get_pos()
@@ -187,6 +226,8 @@ class Renderer(threading.Thread):
 #							print "Start game has been clicked"
 						elif yPos >= 180 and yPos <= 240:
 							print "Highscores has been clicked"
+							self.showHighscores()
+							self.drawMenu()
 						elif yPos >= 240 and yPos <= 300:
 #							print "Exit game has been clicked"
 							sys.exit()
@@ -204,8 +245,9 @@ class Renderer(threading.Thread):
 					elif n == 1:
 						self.deleteSnake(l)
 					elif n == 3:
+						print "Going to draw overlay in run"
 						self.drawGameOverOverlay(l)
-						highscore.add(l)
+						add(l)
 
 					self.printScore(self.score)
 
@@ -301,7 +343,7 @@ class Renderer(threading.Thread):
 										
 
 	def drawGameOverOverlay(self, score):
-		print "Game Over"
+		print "In GameOverOverlay"
 		s = pygame.Surface(self.size)
 		s.set_alpha(128)
 		s.fill(Renderer.black)
@@ -330,7 +372,7 @@ class Renderer(threading.Thread):
                                                 count = 0
 						overlayActive = False
 
-                 #       pygame.display.flip()
+                        pygame.display.flip()
                 self.drawMenu()
 
 
